@@ -34,6 +34,10 @@ if DEBUG:
 else:
     ALLOWED_HOSTS = ["https://*.codeinstitute-ide.net/", "https://*.herokuapp.com"]
 
+CSRF_TRUSTED_ORIGINS = [] if DEBUG else [
+    "https://*.codeinstitute-ide.net/", "https://*.herokuapp.com"
+]
+
 
 # Application definition
 
