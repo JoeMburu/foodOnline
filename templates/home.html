@@ -19,21 +19,21 @@
 	<!-- Bootstrap Link End-->
 	<!-- Iconmoon Link Start-->
 	<link href="{% static 'css/iconmoon.css' %}" rel="stylesheet">
-	<!-- Iconmoon Link End-->
+	<!-- Iconmoon Link End-->	 
 	<!-- Animate Link Start-->
 	<link href="{% static 'css/animate.css' %}" rel="stylesheet">
 	<!-- Animate Link End-->
 	<!-- Chosen Link Start-->
-	<link href="assets/css/chosen.css" rel="stylesheet">
+	<link href="{% static 'css/chosen.css' %}" rel="stylesheet">
 	<!-- Chosen Link End-->
 	<!-- Swiper Link Start-->
-	<link href="assets/css/swiper.css" rel="stylesheet">
+	<link href="{% static 'css/swiper.css' %}" rel="stylesheet">
 	<!-- Swiper Link End-->
 	<!-- Woocommerce Link Start-->
-	<link href="assets/css/woocommerce.css" rel="stylesheet">
+	<link href="{% static 'css/woocommerce.css' %}" rel="stylesheet">
 	<!-- Woocommerce Link End-->
 	<!-- Pretty Photo Link Start-->
-	<link href="assets/css/prettyPhoto.css" rel="stylesheet">
+	<link href="{% static 'css/prettyPhoto.css' %}" rel="stylesheet">
 	<!-- Pretty Photo Link End-->
 	<!-- Themes / plugin Link Start-->
 	<link href="{% static 'css/style.css' %}" rel="stylesheet">
@@ -45,14 +45,7 @@
 	<!-- Themes / plugin Link End-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="{% static 'js/modernizr.js' %}"></script>
-	<script src="{% static 'js/bootstrap.js' %}"></script>
-	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	<!--[if lt IE 9]>
-          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
+	<script src="{% static 'js/bootstrap.js' %}"></script>	
 </head>
 
 <body>
@@ -67,7 +60,7 @@
 							<div class="logo">
 								<figure>
 									<a href="index.html" class="light-logo">
-										<img src="{% static 'extra-images/main-logo.png' %}" alt="FoodBakery">
+										<img src="{% static 'logo/foodOnlineLogo.png' %}" width="250" alt="FoodBakery">
 									</a>
 								</figure>
 							</div>
@@ -646,7 +639,7 @@
 		</div>
 	</div>
 	<!-- Modal Popup End -->
-	<script src="{%% static 'js/responsive.menu.js' }"></script>
+	<script src="{% static 'js/responsive.menu.js' %}"></script>
 	<script src="{% static 'js/swiper.min.js' %}"></script>
 	<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
 	<script src="{% static 'js/chosen.js' %}"></script>
