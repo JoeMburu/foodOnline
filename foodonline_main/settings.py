@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from decouple import config
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -87,19 +88,11 @@ WSGI_APPLICATION = 'foodonline_main.wsgi.application'
 
 if ENV == "production":
     DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": config("NEON_NAME"),
-            "USER": config("NEON_USER"),
-            "PASSWORD": config("NEON_PASSWORD"),
-            "HOST": config("NEON_HOST"),
-            "PORT": config("NEON_PORT", "5432"),
-            "OPTIONS": {
-                # Neon requires SSL
-                "sslmode": "require",
-            },
-            "CONN_MAX_AGE": 600,
-        }
+        "default": dj_database_url.config(
+            env="DATABASE_URL",
+            conn_max_age=600,
+            ssl_require=True
+        )
     }
 else:
    DATABASES = {
