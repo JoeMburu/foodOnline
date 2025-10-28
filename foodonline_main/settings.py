@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 from decouple import config
 import dj_database_url
+import os
+import psycopg2
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,18 +24,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-ENV = config('DJANGO_ENV', default='development')
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-
 # Allowed hosts
-if DEBUG:
-    ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
-else:
-    ALLOWED_HOSTS = ["https://*.codeinstitute-ide.net/", "https://*.herokuapp.com"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "*.herokuapp.com"]
 
 CSRF_TRUSTED_ORIGINS = [] if DEBUG else [
     "https://*.codeinstitute-ide.net/", "https://*.herokuapp.com"
@@ -86,14 +83,14 @@ WSGI_APPLICATION = 'foodonline_main.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-if ENV == "production":
-    DATABASES = {
+if os.getenv("DATABASE_URL"):
+   DATABASES = {
         "default": dj_database_url.config(
             env="DATABASE_URL",
             conn_max_age=600,
-            ssl_require=True
+            ssl_require=True,
         )
-    }
+}    
 else:
    DATABASES = {
     'default': {
@@ -102,8 +99,7 @@ else:
         'USER': config('DB_USER'), 
         'PASSWORD': config('DB_PASSWORD'),
         'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT'),
-        "CONN_MAX_AGE": 0,  # fine for dev
+        'PORT': config('DB_PORT'),        
     }
 }
 
@@ -146,10 +142,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [ BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [  
-    BASE_DIR / "static"    
-]
+
 
 # Media files configuration
 MEDIA_URL = '/media/'
@@ -160,8 +155,3 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STORAGES = {
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
-    }
-}
