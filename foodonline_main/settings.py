@@ -29,11 +29,18 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-# Allowed hosts
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "*.herokuapp.com"]
+HEROKU_APP_NAME = os.getenv("HEROKU_APP_NAME")  # set this in Heroku config (optional)
 
-CSRF_TRUSTED_ORIGINS = [] if DEBUG else [
-    "https://*.codeinstitute-ide.net/", "https://*.herokuapp.com"
+# Allowed hosts
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    f"{HEROKU_APP_NAME}.herokuapp.com" if HEROKU_APP_NAME else "your-app-name.herokuapp.com",
+]
+
+# Django 4+ needs full scheme for CSRF on HTTPS
+CSRF_TRUSTED_ORIGINS = [
+    f"https://{HEROKU_APP_NAME}.herokuapp.com" if HEROKU_APP_NAME else "https://*.herokuapp.com",
 ]
 
 
