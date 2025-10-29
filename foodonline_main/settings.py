@@ -18,6 +18,7 @@ import psycopg2
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+HEROKU_HOST = "food-vendor-online-27a8cd928d8f.herokuapp.com"  # your exact app host
 
 
 # Quick-start development settings - unsuitable for production
@@ -32,11 +33,15 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 HEROKU_APP_NAME = os.getenv("HEROKU_APP_NAME")  # set this in Heroku config (optional)
 
 # Allowed hosts
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+   "localhost",
+    "127.0.0.1",
+    HEROKU_HOST,
+]
 
 # Django 4+ needs full scheme for CSRF on HTTPS
 CSRF_TRUSTED_ORIGINS = [
-    f"https://{HEROKU_APP_NAME}.herokuapp.com" if HEROKU_APP_NAME else "https://*.herokuapp.com",
+    f"https://{HEROKU_HOST}",
 ]
 
 
