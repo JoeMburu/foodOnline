@@ -32,11 +32,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 HEROKU_APP_NAME = os.getenv("HEROKU_APP_NAME")  # set this in Heroku config (optional)
 
 # Allowed hosts
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    f"{HEROKU_APP_NAME}.herokuapp.com" if HEROKU_APP_NAME else "your-app-name.herokuapp.com",
-]
+ALLOWED_HOSTS = ["*"]
 
 # Django 4+ needs full scheme for CSRF on HTTPS
 CSRF_TRUSTED_ORIGINS = [
