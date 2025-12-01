@@ -148,9 +148,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [ BASE_DIR / "static"]
+STATIC_URL = '/static/'
+
+# Where collectstatic will put everything (created automatically)
+STATIC_ROOT = BASE_DIR / 'static'
 
 # Media files configuration
 MEDIA_URL = 'media/'
@@ -162,11 +163,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # WhiteNoise storage (hashed filenames + compression)
-STORAGES = {
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
+
 # Heroku proxy headers (not strictly static-related, but recommended)
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 USE_X_FORWARDED_HOST = True
