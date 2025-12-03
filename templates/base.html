@@ -1,0 +1,45 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">	
+	<title>FoodOnline</title>
+	<!-- Google Font Family Link Start -->
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800">
+	<!-- Google Font Family Link End -->
+
+	<!-- CSS -->
+	<link href="{% static 'css/iconmoon.css' %}" rel="stylesheet">
+	<link href="{% static 'css/style.css' %}" rel="stylesheet">
+	<link href="{% static 'css/cs-foodbakery-plugin.css' %}" rel="stylesheet">
+	<link href="{% static 'css/bootstrap-slider.css' %}" rel="stylesheet">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">	
+	<link rel="stylesheet" href="{% static 'css/custom.css' %}">
+	
+
+</head>
+<body>
+	<!--Main Wrapper-->
+	<div class="main-wrapper">
+		<!-- Include header -->
+     {% include 'includes/header.html' %}
+
+    <!-- Include main section -->
+    {% block content %}
+      {# inherited contents go here #}
+    {% endblock content %}
+    
+    <!-- Include footer -->
+    {% include 'includes/footer.html' %}	
+	</div>
+	<!--Main Wrapper End-->	
+
+	<!-- Modal Popup End -->
+	<script src="{% static 'js/scripts.js' %}"></script>
+	<script src="{% static 'js/functions.js' %}"></script>
+</body>
+</html>
