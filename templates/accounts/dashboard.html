@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Dashboard</h1>
+<h3>Welcome, {{ user.username }}</h3>
+
+{% if messages %}
+  {% include 'includes/alert.html' %}                                 
+{% endif %}  
+
+{% endblock %}

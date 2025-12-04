@@ -3,11 +3,14 @@ from django.shortcuts import render, redirect
 from vendor.forms import VendorRegistrationForm
 from .forms import UserRegistrationForm
 from .models import User
-from django.contrib import messages
+from django.contrib import messages, auth
 
 # Create your views here.
 def registerUser(request):
-    if request.method == 'POST':
+    if request.user.is_authenticated:
+        messages.warning(request, 'You are already registered and logged in.')
+        return redirect('dashboard')  # Redirect to a dashboard or home page if already logged in   
+    elif request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
@@ -27,7 +30,10 @@ def registerUser(request):
     return render(request, 'accounts/register_user.html', context)
 
 def registerVendor(request):
-    if request.method == 'POST':
+    if request.user.is_authenticated:
+        messages.warning(request, 'You are already registered and logged in.')
+        return redirect('dashboard')  # Redirect to a dashboard or home page if already logged in
+    elif request.method == 'POST':
         # store data and create user
         form = UserRegistrationForm(request.POST)
         vendor_form = VendorRegistrationForm(request.POST, request.FILES)
@@ -56,5 +62,31 @@ def registerVendor(request):
         }
         return render(request, 'accounts/register_vendor.html', context)
 
-        
+def login(request):
+    if request.user.is_authenticated:
+        messages.warning(request, 'You are already logged in.')
+        return redirect('dashboard')  # Redirect to a dashboard or home page if already logged in
+    elif request.method == 'POST':
+        # Authenticate user
+        email = request.POST.get('email') # request.Post['email']
+        password = request.POST.get('password')
+        # Add your authentication logic here. Django has authentication built-in.
+        user = auth.authenticate(email=email, password=password)
+        if user is not None:
+            auth.login(request, user)
+            messages.success(request, 'You are now logged in.')
+            return redirect('dashboard')  # Redirect to a dashboard or home page 
+        else:
+            messages.error(request, 'Invalid login credentials.')
+            return redirect('login')  # Redirect back to login page
+    else:
+        return render(request, 'accounts/login.html')
+    
+def logout(request):
+    auth.logout(request)
+    messages.info(request, 'You have been logged out.')        
+    return redirect('login')
+
+def dashboard(request):
+    return render(request, 'accounts/dashboard.html')
     
