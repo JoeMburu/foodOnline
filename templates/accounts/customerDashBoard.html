@@ -2,8 +2,10 @@
 
 {% block content %}
 
-<h1>Dashboard</h1>
+<h1>Customer Dashboard</h1>
 <h3>Welcome, {{ user.username }}</h3>
+{{ user.get_role }}
+
 
 {% if messages %}
   {% include 'includes/alert.html' %}                                 
