@@ -7,9 +7,16 @@
   {% include 'includes/alert.html' %}                                 
 {% endif %}  
 
+<style> 
+  /* background: url({% static 'extra-images/cover-photo01.jpg' %}) no-repeat scroll 0 0 / cover; */   
+  .page-section.restaurant-detail-image-section {
+    background: url("{% static 'extra-images/cover-photo01.jpg' %}") no-repeat scroll 0 0 / cover;
+  }
+</style>
+
 <!-- Main Section Start -->
 <div class="main-section">
-  <div class="page-section restaurant-detail-image-section" style=" background: url({% static 'extra-images/cover-photo01.jpg' %}) no-repeat scroll 0 0 / cover;">
+  <div class="page-section restaurant-detail-image-section">
     <!-- Container Start -->
     <div class="container">
       <!-- Row Start -->
@@ -45,7 +52,7 @@
       <div class="row">
         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
           <!-- Load the isdebar here -->
-          {% include 'includes/customer_sidebar.html' %}
+          {% include 'includes/vendor_sidebar.html' %}
           <!-- Sidebar End --> 
          
         </div>
