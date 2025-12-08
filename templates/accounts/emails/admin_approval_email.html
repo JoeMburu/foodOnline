@@ -1,0 +1,13 @@
+{% autoescape off %}
+Hi {{ user.first_name }},
+
+{% if is_approved %}
+Congratulations! Your restaurant has been approved by our admin team.
+{% else %}
+We regret to inform you that your restaurant approval has been revoked. For more details, please contact support@foodonline.com
+{% endif %} 
+
+Thank you.
+The FoodOnline Team
+
+{% endautoescape %}
