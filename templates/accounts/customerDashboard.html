@@ -4,7 +4,15 @@
 {% block content %}
 
 
-<h2>Customer Dashboard</h2>
+{% if messages %}
+  {% include 'includes/alert.html' %}                                 
+{% endif %}
+<style> 
+  /* background: url({% static 'extra-images/cover-photo01.jpg' %}) no-repeat scroll 0 0 / cover; */   
+  .page-section.restaurant-detail-image-section {
+    background: url("{% static 'extra-images/cover-photo01.jpg' %}") no-repeat scroll 0 0 / cover;
+  }
+</style>
 
 
 
