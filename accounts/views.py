@@ -72,13 +72,10 @@ def registerVendor(request):
             vendor.user_profile = user.userprofile
             vendor.save()
             # Send success message
-            send_verification_email(request, user)
-            print("VENDOR REGISTERED")
-
+            send_verification_email(request, user)            
             messages.success(request, 'Your vendor account has been registered successfully! Please wait for approval.')
-            return redirect('registerVendor')  # Redirect to the same page or another page
+            return redirect('login')  # Redirect to the same page or another page
         else:
-            print("INVALID FORM")
             messages.error(request, 'Please correct the errors below.')
             return render(request, 'accounts/register_vendor.html', {'form': form, 'vendor_form': vendor_form})
     else:
