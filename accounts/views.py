@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from accounts.utils import detectUser, send_verification_email, send_password_reset_email
 from vendor.forms import VendorRegistrationForm
@@ -100,7 +101,8 @@ def login(request):
         if user is not None:
             auth.login(request, user)
             messages.success(request, 'You are now logged in.')
-            return redirect('myAccount')  # Redirect to a dashboard or home page 
+            #return redirect('myAccount')  # Redirect to a dashboard or home page 
+            return HttpResponse("Customer dashboard OK")
         else:
             messages.error(request, 'Invalid login credentials.')
             return redirect('login')  # Redirect back to login page
