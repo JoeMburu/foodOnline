@@ -10,7 +10,7 @@
 <style> 
   /* background: url({% static 'extra-images/cover-photo01.jpg' %}) no-repeat scroll 0 0 / cover; */   
   .page-section.restaurant-detail-image-section {
-    background: url("{% static 'extra-images/cover-photo01.jpg' %}") no-repeat scroll 0 0 / cover;
+    background: url("{{vendor.user_profile.cover_picture.url}}") no-repeat scroll 0 0 / cover;
   }
 </style>
 
@@ -27,15 +27,17 @@
             <div class="company-info">
               <div class="img-holder">
                 <figure>
-                  <img src="{% static 'extra-images/listing-logo18.png' %}" alt="">
+                  <img src="{{vendor.user_profile.profile_picture.url}}" alt="profile_picture">
                 </figure>
               </div>
 
               <div class="text-holder">
-                <span class="restaurant-title">Restaurant Demo</span>
+                <span class="restaurant-title">{{vendor.vendor_name}}</span>
                 <div class="text">
                   <i class="icon-location"></i>
-                  <p>Mark ricardo road, lane 27, Austin, Texas, USA.</p>
+                  <!-- <p>Mark ricardo road, lane 27, Austin, Texas, USA.</p> -->
+                  <p>{{vendor.user_profile.address_line_1}} {{vendor.user_profile.address_line_2}}, {{vendor.user_profile.city}}</p>
+                  
                 </div>
               </div>
             </div>

@@ -2,8 +2,9 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from accounts.utils import detectUser, send_verification_email, send_password_reset_email
 from vendor.forms import VendorRegistrationForm
+from vendor.models import Vendor
 from .forms import UserRegistrationForm
-from .models import User
+from .models import User, UserProfile
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
@@ -122,7 +123,14 @@ def customerDashboard(request):
 @login_required(login_url='login')
 @user_passes_test(check_role_vendor)
 def vendorDashboard(request):
-    return render(request, 'accounts/vendorDashboard.html')
+    vendor = Vendor.objects.get(user=request.user)    
+    userProfile = UserProfile.objects.get(user=request.user)
+    context = {
+        'vendor': vendor,       
+        
+    }   
+
+    return render(request, 'accounts/vendorDashboard.html', context)
 
 @login_required(login_url='login')
 def myAccount(request):

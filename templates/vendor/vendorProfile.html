@@ -1,11 +1,10 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
 {% load static %}
 
 {% block content %}
 
-{% if messages %}
-  {% include 'includes/alert.html' %}                                 
-{% endif %}  
+{% include 'includes/alert.html' %}
 
 <style> 
   /* background: url({% static 'extra-images/cover-photo01.jpg' %}) no-repeat scroll 0 0 / cover; */   
@@ -136,6 +135,6 @@
 </div>
 <!-- Main Section End -->
 
-
-
 {% endblock %}
+
+
