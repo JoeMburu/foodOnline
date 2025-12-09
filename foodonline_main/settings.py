@@ -161,8 +161,7 @@ STATIC_URL = '/static/'
 # Where collectstatic will put everything (created automatically)
 STATIC_ROOT = BASE_DIR / 'static'
 
-# Media files configuration
-MEDIA_URL = '/media/'
+
 
 
 # Default primary key field type
@@ -196,6 +195,8 @@ ENVIRONMENT = config('DJANGO_ENV', default='production')
 if ENVIRONMENT == 'production':
     DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 else:
+    # Media files configuration
+    MEDIA_URL = '/media/'
     MEDIA_ROOT = BASE_DIR / 'media'
 
 CLOUDINARY_STORAGE = {
