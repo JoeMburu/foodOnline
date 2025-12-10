@@ -187,18 +187,6 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD') 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-ENVIRONMENT = config('DJANGO_ENV', default='production')
-
-if ENVIRONMENT == 'production':
-    #DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
-    pass
-else:
-   pass
-    # Media files configuration
-    #MEDIA_URL = '/media/'
-    #MEDIA_ROOT = BASE_DIR / 'media'
-
-
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 CLOUDINARY_STORAGE = {
    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
@@ -206,4 +194,4 @@ CLOUDINARY_STORAGE = {
    'API_SECRET': config('CLOUDINARY_API_SECRET'),
 }
 
-print("ENVIRONMENT value:", ENVIRONMENT)
+
