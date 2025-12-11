@@ -50,10 +50,7 @@
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="display: flex; align-items: center; ">
                                       <a href="{% url 'forgotPassword' %}">Forgot Password?</a>                                         
                                     </div>
-                                </div>
-                                {% if messages %}
-                                    {% include 'includes/alert.html' %}                                 
-                                {% endif %}     
+                                </div>                                    
                             </li>
                         </ul>
                     </form>                    
@@ -65,6 +62,9 @@
       </div>
     </div>
   </div>
+  {% if messages %}
+    {% include 'includes/alert.html' %}                                 
+  {% endif %} 
 	<!-- Main Section End -->
 
 {% endblock %}
