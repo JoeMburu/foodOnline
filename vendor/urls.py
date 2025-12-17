@@ -5,6 +5,21 @@ from accounts import views as Accounts_Views
 urlpatterns = [
   path('', Accounts_Views.vendorDashboard, name='vendor'), 
   path('profile/', views.vendorProfile, name='vendorProfile'), 
+  path('menu-builder/', views.menuBuilder, name='menuBuilder'),
+  path('menu-builder/category/<int:pk>/', views.foodItemsByCategory, name='foodItemsByCategory'),
+  
+  # Category CRUD
+  path('menu-builder/category/add/', views.addCategory, name='addCategory'),
+  path('menu-builder/category/edit/<int:pk>/', views.editCategory, name='editCategory'),
+  path('menu-builder/category/delete/<int:pk>/', views.deleteCategory, name='deleteCategory'),
+
+  # Food Item CRUD
+  #path('menu-builder/food/add/', views.addFoodItem, name='addFoodItem'),
+  #path('menu-builder/food/edit/<int:pk>/', views.editFoodItem, name='editFoodItem'),
+  #path('menu-builder/food/delete/<int:pk>/', views.deleteFoodItem, name='deleteFoodItem'),  
+
+
+
   #path('registerUser/', views.registerUser, name='registerUser'), 
    
 

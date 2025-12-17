@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'accounts',
     'foodonline_main',
     'vendor',
+    'menu',
 ]
 
 MIDDLEWARE = [
