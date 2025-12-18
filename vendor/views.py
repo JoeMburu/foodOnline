@@ -149,7 +149,7 @@ def addFoodItem(request):
             food_item.slug = slugify(food_item.food_title)
             food_item.save()
             messages.success(request, 'Food item added successfully!')
-            return redirect('menuBuilder')
+            return redirect('foodItemsByCategory', pk=food_item.category.pk)
         else:
             print(form.errors)
             messages.error(request, 'Please correct the error below.')

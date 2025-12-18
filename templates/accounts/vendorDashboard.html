@@ -9,14 +9,19 @@
 
 <style> 
   /* background: url({% static 'extra-images/cover-photo01.jpg' %}) no-repeat scroll 0 0 / cover; */   
-  .page-section.restaurant-detail-image-section {
+  /* .page-section.restaurant-detail-image-section {
+    {% if vendor.user_profile.cover_picture %}
     background: url("{{vendor.user_profile.cover_picture.url}}") no-repeat scroll 0 0 / cover;
-  }
+    {% else %}
+    background: url("{% static 'extra-images/cover-photo01.jpg' %}") no-repeat scroll 0 0 / cover;
+    {% endif %}
+    
+  } */
 </style>
 
 <!-- Main Section Start -->
 <div class="main-section">
-  <div class="page-section restaurant-detail-image-section">
+  <div class="page-section restaurant-detail-image-section" style="background: url({% if vendor.user_profile.cover_picture %} {{vendor.user_profile.cover_picture.url}} {% else %} {% static 'images/default-cover.PNG' %} {% endif %}) no-repeat scroll 0 0 / cover;">
     <!-- Container Start -->
     <div class="container">
       <!-- Row Start -->
@@ -27,17 +32,22 @@
             <div class="company-info">
               <div class="img-holder">
                 <figure>
+                  {% if vendor.user_profile.profile_picture %}
                   <img src="{{vendor.user_profile.profile_picture.url}}" alt="profile_picture">
+                  {% else %}
+                  <img src="{% static 'images/default-profile.PNG' %}" alt="default_profile_picture">
+                  {% endif %} 
                 </figure>
               </div>
 
               <div class="text-holder">
                 <span class="restaurant-title">{{vendor.vendor_name}}</span>
                 <div class="text">
+                  {% if vendor.user_profile.full_address %}
                   <i class="icon-location"></i>
                   <!-- <p>Mark ricardo road, lane 27, Austin, Texas, USA.</p> -->
                   <p>{{vendor.user_profile.full_address}}.</p>
-                  
+                  {% endif %}                  
                 </div>
               </div>
             </div>

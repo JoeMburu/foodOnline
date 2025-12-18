@@ -6,16 +6,10 @@
 
 {% include 'includes/alert.html' %}
 
-<style> 
-  /* background: url({% static 'extra-images/cover-photo01.jpg' %}) no-repeat scroll 0 0 / cover; */   
-  .page-section.restaurant-detail-image-section {
-    background: url({{vendor.user_profile.cover_picture.url}}) no-repeat scroll 0 0 / cover;
-  }
-</style>
 
 <!-- Main Section Start -->
 <div class="main-section">
-  <div class="page-section restaurant-detail-image-section">
+  <div class="page-section restaurant-detail-image-section" style="background: url({% if vendor.user_profile.cover_picture %} {{vendor.user_profile.cover_picture.url}} {% else %} {% static 'images/default-cover.PNG' %} {% endif %}) no-repeat scroll 0 0 / cover;">
     <!-- Container Start -->
     <div class="container">
       <!-- Row Start -->
@@ -26,7 +20,11 @@
             <div class="company-info">
               <div class="img-holder">
                 <figure>
+                  {% if vendor.user_profile.profile_picture %}
                   <img src="{{vendor.user_profile.profile_picture.url}}" alt="profile_picture">
+                  {% else %}
+                  <img src="{% static 'images/default-profile.PNG' %}" alt="default_profile_picture">
+                  {% endif %}
                 </figure>
               </div>
 
@@ -72,7 +70,11 @@
                                 <li class="gal-img">
                                   <div class="drag-list">
                                     <div class="item-thumb">
+                                      {% if profile.profile_picture %}
                                       <img class="thumbnail" src="{{profile.profile_picture.url}}" alt="profile picture">
+                                      {% else %}
+                                      <img class="thumbnail" src="{% static 'images/default-profile.PNG' %}" alt="default profile picture">
+                                      {% endif %}
                                     </div>
                                   </div>
                                 </li>
@@ -94,7 +96,11 @@
                                 <li class="gal-img">
                                   <div class="drag-list">
                                     <div class="item-thumb">
+                                      {% if profile.cover_picture %}
                                       <img class="thumbnail" src="{{profile.cover_picture.url}}" alt="cover picture">
+                                      {% else %}
+                                      <img class="thumbnail" src="{% static 'images/default-cover.PNG' %}" alt="default cover picture">
+                                      {% endif %}
                                     </div>
                                   </div>
                                 </li>
