@@ -2,7 +2,7 @@ from django.forms import ValidationError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 
-from menu.forms import CategoryForm
+from menu.forms import CategoryForm, FoodItemForm
 from .forms import VendorRegistrationForm
 from accounts.forms import UserProfileForm
 from accounts.models import UserProfile
@@ -137,3 +137,57 @@ def deleteCategory(request, pk=None):
     category.delete()
     messages.success(request, 'Category deleted successfully!')
     return redirect('menuBuilder')
+
+# Food Item CROD
+def addFoodItem(request):
+    vendor = get_vendor(request)
+    if request.method == 'POST':
+        form = FoodItemForm(request.POST, request.FILES, vendor=vendor)
+        if form.is_valid():
+            food_item = form.save(commit=False)
+            food_item.vendor = vendor
+            food_item.slug = slugify(food_item.food_title)
+            food_item.save()
+            messages.success(request, 'Food item added successfully!')
+            return redirect('menuBuilder')
+        else:
+            print(form.errors)
+            messages.error(request, 'Please correct the error below.')
+    form = FoodItemForm(vendor=vendor)    
+    context = {
+        'vendor': vendor,
+        'form': form,       
+    }
+    return render(request, 'vendor/addFoodItem.html', context)
+
+def editFoodItem(request, pk=None):
+    vendor = get_vendor(request)
+    foodItem = get_object_or_404(FoodItem, pk=pk, vendor=vendor)
+    if request.method == 'POST':
+        form = FoodItemForm(request.POST, request.FILES, instance=foodItem, vendor=vendor)
+        if form.is_valid():
+            food_item = form.save(commit=False)
+            food_item.vendor = vendor
+            food_item.slug = slugify(food_item.food_title)
+            food_item.save()
+            messages.success(request, 'Food item updated successfully!')
+            return redirect('foodItemsByCategory', pk=food_item.category.pk)
+        else:
+            print(form.errors)
+            messages.error(request, 'Please correct the error below.')      
+    else:
+        form = FoodItemForm(instance=foodItem, vendor=vendor)
+    context = {
+        'vendor': vendor,
+        'form': form,
+        'foodItem': foodItem,
+    }
+    return render(request, 'vendor/editFoodItem.html', context)
+
+
+def deleteFoodItem(request, pk=None):
+    vendor = get_vendor(request)
+    foodItem = get_object_or_404(FoodItem, pk=pk, vendor=vendor)
+    foodItem.delete()
+    messages.success(request, 'Food item deleted successfully!')
+    return redirect('foodItemsByCategory', pk=foodItem.category.pk)

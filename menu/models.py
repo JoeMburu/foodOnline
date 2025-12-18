@@ -32,11 +32,6 @@ class Category(models.Model):
   def save(self, *args, **kwargs):
        self.full_clean()  # This will call the clean method
        super().save(*args, **kwargs)
-     
-
-   
-
-
 
   def __str__(self):
       return self.category_name
