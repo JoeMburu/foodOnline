@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
+from django.template.defaultfilters import slugify
 
 
 
@@ -57,7 +58,7 @@ def registerUser(request):
 def registerVendor(request):
     if request.user.is_authenticated:
         messages.warning(request, 'You are already registered and logged in.')
-        return redirect('dashboard')  # Redirect to a dashboard or home page if already logged in
+        return redirect('myAccount')  # Redirect to a dashboard or home page if already logged in
     elif request.method == 'POST':
         # store data and create user
         form = UserRegistrationForm(request.POST)
@@ -66,12 +67,14 @@ def registerVendor(request):
             password = form.cleaned_data['password']
             user = form.save(commit=False)
             user.role = User.VENDOR
-            user.set_password(password)
+            user.set_password(password)            
             user.save()
 
             vendor = vendor_form.save(commit=False)
             vendor.user = user
             vendor.user_profile = user.userprofile
+            vendor_name = vendor_form.cleaned_data['vendor_name']
+            vendor.vendor_slug = slugify(vendor_name) + '-' + str(user.id)
             vendor.save()
             # Send success message
             send_verification_email(request, user)            

@@ -13,15 +13,12 @@
 	<!-- Google Font Family Link End -->
 
 	<!-- CSS -->
-	<link href="{% static 'css/iconmoon.css' %}" rel="stylesheet">
-	<link href="{% static 'css/style.css' %}" rel="stylesheet">
+	<link href="{% static 'css/iconmoon.css' %}" rel="stylesheet">	
 	<link href="{% static 'css/cs-foodbakery-plugin.css' %}" rel="stylesheet">
-	<link href="{% static 'css/bootstrap-slider.css' %}" rel="stylesheet">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">	
+	<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+	<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">	 -->
 	
-	<!-- Font awesome -->
-	 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	
+	<link href="{% static 'css/style.css' %}" rel="stylesheet">
 	<link rel="stylesheet" href="{% static 'css/custom.css' %}">
 	
 	
@@ -49,13 +46,165 @@
 	<script>
 	</script>
 	<!-- JavaScript -->
-	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-	<script src="{% static 'js/custom.js' %}"></script>
-	<script
-  src="https://maps.googleapis.com/maps/api/js?key={{GOOGLE_API_KEY}}&libraries=places&callback=initAutocomplete"
-  async
-  defer>
-</script>
+	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+	<!-- Font awesome -->
+	<script src="https://kit.fontawesome.com/5037763d8e.js" crossorigin="anonymous"></script>
+
+	<script>
+		window.initAutocomplete = function () {
+			// If Maps isn't ready yet, bail
+			if (!window.google?.maps?.places) return;
+
+			const el = document.getElementById('id_address');
+
+			// If the element doesn't exist yet, just exit quietly
+			if (!(el instanceof HTMLInputElement)) return;
+
+			// Prevent double initialization
+			if (el.dataset.placesInit === "1") return;
+			el.dataset.placesInit = "1";
+
+			const autocomplete = new google.maps.places.Autocomplete(el, {
+				types: ['geocode', 'establishment'],
+				componentRestrictions: { country: 'fi' }
+			});
+
+			autocomplete.addListener('place_changed', onPlaceChanged);
+  	};			
+
+		onPlaceChanged = function  () {
+			//console.log("Beginning of onPlaceChanged");
+			var place = autocomplete.getPlace();
+
+			// User did not select the prediction. Reset the input field or alert()
+			if (!place.geometry){
+							document.getElementById('id_address').placeholder = "Start typing...";
+			}
+			else {
+							//console.log('place name=>', place)
+			}
+			// get the address components and assign them to the fields
+			//console.log(place);
+			var geocoder = new google.maps.Geocoder();
+			var address = document.getElementById('id_address').value;
+			geocoder.geocode({'address': address}, function(results, status) {
+					if(status == google.maps.GeocoderStatus.OK) {
+							var latitude = results[0].geometry.location.lat();
+							var longitude = results[0].geometry.location.lng();
+							//console.log('lat=>', latitude);
+							//console.log('lng=>', longitude);
+
+							$('#id_latitude').val(latitude);
+							$('#id_longitude').val(longitude);
+							//$('#id_address').val(results[0].formatted_address);
+							$('#id_address').val(address);
+					}
+			});    
+			// loop through the address components and assign other address data
+			for(var i=0; i<place.address_components.length; i++) {
+					for(var j=0; j<place.address_components[i].types.length; j++) {
+							// get country
+							if (place.address_components[i].types[j] == 'country'){
+									//console.log('country=>', place.address_components[i].long_name);
+									$('#id_country').val(place.address_components[i].long_name);
+							}
+							// get state
+							if (place.address_components[i].types[j] == 'administrative_area_level_1'){
+									//console.log('state=>', place.address_components[i].long_name);
+									$('#id_state').val(place.address_components[i].long_name);
+							}
+							// get city
+							if (place.address_components[i].types[j] == 'locality'){
+									//console.log('city=>', place.address_components[i].long_name);
+									$('#id_city').val(place.address_components[i].long_name);
+							}
+							// get postal code
+							if (place.address_components[i].types[j] == 'postal_code'){
+									//console.log('postal_code=>', place.address_components[i].long_name);
+									$('#id_post_code').val(place.address_components[i].long_name);
+									console.log("Post code: ", place.address_components[i].long_name)
+							}
+
+					} // 	end of for loop	
+			} //    end of for loop		
+		} // end of onPlaceChanged function 
+
+	//CLICK +/- BUTTONS
+	$(document).ready(function(){
+  	$('.addItem').click(function(e){
+    e.preventDefault();
+    const $btn = $(this);
+
+    const url = $btn.attr('data-url');
+    const foodId = $btn.attr('data-id');
+    const $qty = $btn.closest('.price-holder').find('.qty');
+    const data = {
+      food_id: foodId,
+    }; 
+    
+    $.ajax({
+      url: url,
+      method: 'GET',
+      data: data,
+      success: function(response){
+        // Update the quantity displayed in the UI
+       
+        if(response.status === 'success'){
+					$qty.text(response.cart_quantity);						
+					$('#cart-count').text(response.cart_count);
+         
+        }
+				else if(response.status === 'login_required'){
+					swal(response.message, "", "info").then(function() {
+						window.location = "/login";
+					});
+				}       
+      }  
+
+    });
+
+
+  });
+
+  $('.subtractItem').click(function(e){    
+    e.preventDefault();    
+    const $btn = $(this);
+    
+    const url = $btn.attr('data-url');
+    const foodId = $btn.attr('data-id');
+    const $qty = $btn.closest('.price-holder').find('.qty');
+    const data = {
+      food_id: foodId,
+    };  
+    $.ajax({
+      url: url,
+      method: 'GET',
+      data: data,
+      success: function(response){
+				// Update the quantity displayed in the UI
+					if(response.status === 'success'){
+					$qty.text(response.cart_quantity);
+					$('#cart-count').text(response.cart_count);
+				}
+				if(response.status === 'failed'){
+					
+				}
+      }  
+
+    });
+  });
+});
+
+
+		
+
+		
+	</script>
+	
+	{% block extra_js %}{% endblock %}
+
+	<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>	
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="{% static 'js/custom.js' %}" defer></script>	
 </body>
 </html>

@@ -203,7 +203,13 @@
   </div>
 </div>
 <!-- Main Section End -->
-
 {% endblock %}
 
 
+{% block extra_js %}
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key={{GOOGLE_API_KEY}}&libraries=places&callback=initAutocomplete"
+    async
+    defer>
+	</script>
+{% endblock %}

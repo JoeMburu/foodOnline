@@ -3,7 +3,7 @@
 <!-- Header start -->
 <header id="header">
   <div class="main-header">
-    <div class="container">
+    <div class="container-fluid">
       <div class="row">
         <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
           <div class="logo">
@@ -27,15 +27,15 @@
         </div>
         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
           <div class="login-option">
+            <a href="#" class="position-relative"><i class="fa-solid fa-cart-shopping text-danger"></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cart-count">{{ cart_count }}</span></a>
+            <a href="{% url 'marketplace' %}" class="btn btn-outline-danger text-uppercase font-weight-bold ml-5">Marketplace</a>
             {% if user.is_authenticated  %}             
               <a class="cs-color cs-popup-joinus-btn login-popup" data-target="#sign-in" href="{% url 'myAccount' %}">MY ACCOUNT / </a>
               <a class="cs-color cs-popup-joinus-btn login-popup ml-0 text-danger" data-target="#sign-in" href="{% url 'logout' %}">LOGOUT</a>
             {% else %}
               <a class="cs-color cs-popup-joinus-btn login-popup" data-target="#sign-in" href="{% url 'login' %}">Login / </a>
               <a class="cs-color cs-popup-joinus-btn login-popup ml-0" data-target="#sign-in" href="{% url 'registerUser' %}">Register</a>            
-              <a class="get-start-btn" href="{% url 'registerVendor' %}">
-                Register Restaurant 
-              </a>
+              <a class="get-start-btn" href="{% url 'registerVendor' %}">Register Restaurant</a>
             {% endif %}           
           </div>
         </div>
