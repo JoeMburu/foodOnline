@@ -19,7 +19,7 @@
 	<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">	 -->
 	
 	<link href="{% static 'css/style.css' %}" rel="stylesheet">
-	<link rel="stylesheet" href="{% static 'css/custom.css' %}">
+	<link href="{% static 'css/custom.css' %}" rel="stylesheet">
 	
 	
 
@@ -43,10 +43,9 @@
 	<!-- Modal Popup End -->
 	<!-- <script src="{% static 'js/scripts.js' %}"></script>
 	<script src="{% static 'js/functions.js' %}"></script> -->
-	<script>
-	</script>
+	
 	<!-- JavaScript -->
-	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.js" crossorigin="anonymous"></script>
 	<!-- Font awesome -->
 	<script src="https://kit.fontawesome.com/5037763d8e.js" crossorigin="anonymous"></script>
 
@@ -147,12 +146,12 @@
       method: 'GET',
       data: data,
       success: function(response){
-        // Update the quantity displayed in the UI
-       
+        // Update the quantity displayed in the UI       
         if(response.status === 'success'){
 					$qty.text(response.cart_quantity);						
-					$('#cart-count').text(response.cart_count);
-         
+					$('#cart-count').text(response.cart_count); 
+					// update cart amounts
+					updateCartAmount(response.get_cart_amount.subtotal, response.get_cart_amount.tax, response.get_cart_amount.total_amount);         
         }
 				else if(response.status === 'login_required'){
 					swal(response.message, "", "info").then(function() {
@@ -182,23 +181,89 @@
       data: data,
       success: function(response){
 				// Update the quantity displayed in the UI
-					if(response.status === 'success'){
+				if(response.status === 'success' && response.item_deleted) { 
+					$('#cart-item-' + foodId).remove();		
+					$('#cart-count').text(response.cart_count);
+					swal(response.message, "", "success");	
+					// update cart amounts
+					updateCartAmount(response.get_cart_amount.subtotal, response.get_cart_amount.tax, response.get_cart_amount.total_amount);		
+				}
+				else if(response.status === 'success'){
 					$qty.text(response.cart_quantity);
 					$('#cart-count').text(response.cart_count);
+					// update cart amounts
+					updateCartAmount(response.get_cart_amount.subtotal, response.get_cart_amount.tax, response.get_cart_amount.total_amount);
 				}
-				if(response.status === 'failed'){
-					
+				else if(response.status === 'login_required'){									
+					swal(response.message, "", "info").then(function() {
+						window.location = "/login";
+					});         
+				}       
+				else if(response.status === 'failed'){
+					swal(response.message, "", "warning");
 				}
       }  
 
     });
   });
+
+	$('.deleteItem').click(function(e){    
+	e.preventDefault();    
+	const $btn = $(this);
+		const url = $btn.attr('data-url');
+		const foodId = $btn.attr('data-id');		
+		const data = {
+			food_id: foodId,
+		};  
+		$.ajax({
+			url: url,
+			method: 'GET',
+			data: data,
+			success: function(response){
+				// Update the quantity displayed in the UI       
+				if(response.status === 'login_required'){									
+							swal(response.message, "", "info").then(function() {
+								window.location = "/login";
+							});         
+				}
+				else if(response.status === 'error') {
+					swal(response.message, "", "error");
+				}
+				else if ( response.status === 'failed') {
+					swal(response.message, "", "warning");
+				}
+				else if (response.status === 'success') {
+					// Remove the cart item from the UI
+					$('#cart-item-' + foodId).remove();
+					$('#cart-count').text(response.cart_count);
+					swal(response.message, "", "success");
+					// update cart amounts
+					updateCartAmount(response.get_cart_amount.subtotal, response.get_cart_amount.tax, response.get_cart_amount.total_amount);
+				}
+			}
+		});
+
+	});
+
+	function updateCartAmount(subtotal, tax, total_amount) {
+		$('#subtotal').html(subtotal);
+		$('#tax').html(tax);
+		$('#total').html(total_amount);
+	}
+
 });
 
+	
 
-		
+	
 
-		
+
+
+
+
+
+
+
 	</script>
 	
 	{% block extra_js %}{% endblock %}
